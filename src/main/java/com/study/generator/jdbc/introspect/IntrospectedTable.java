@@ -989,4 +989,23 @@ public class  IntrospectedTable {
         return context.getSqlMapGeneratorConfiguration().getTargetPackage();
     }
 
+
+    public String getSuperEntity() {
+        return context.getJavaModelGeneratorConfiguration().getProperty("superEntity");
+    }
+
+    public String getSuperMapper() {
+        return context.getJavaClientGeneratorConfiguration().getProperty("superMapper");
+    }
+
+
+    public String getBaseService() {
+        return context.getJavaClientGeneratorConfiguration().getProperty("baseService");
+    }
+
+
+    public String getBaseServiceImpl() {
+        return context.getJavaClientGeneratorConfiguration().getProperty("baseServiceImpl");
+    }
+
 }

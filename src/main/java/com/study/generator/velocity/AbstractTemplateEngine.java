@@ -55,6 +55,12 @@ public abstract class AbstractTemplateEngine {
                 String entityFile = String.format(getGeneratePath(tableInfo.getJavaEntityTargetProject(), tableInfo.getJavaEntityPackage()).getAbsolutePath() + File.separator + "%s" + JAVA_SUFFIX, entityName);
                 writer(objectMap, templateFilePath(TemplateConfig.entity), entityFile);
 
+                // MpMapper.xml
+                String xmlFile = getGeneratePath(tableInfo.getXmlTargetProject(), tableInfo.getXmlTargetPackage()).getAbsolutePath() + File.separator + tableInfo.getXmlFileName();
+                writer(objectMap, templateFilePath(TemplateConfig.xml), xmlFile);
+
+
+
 
                 // MpMapper.java
                 /*if (null != tableInfo.getMapperName() && null != pathInfo.get(Constants.MAPPER_PATH)) {
@@ -63,13 +69,7 @@ public abstract class AbstractTemplateEngine {
                         writer(objectMap, templateFilePath(template.getMapper()), mapperFile);
                     }
                 }
-                // MpMapper.xml
-                if (null != tableInfo.getXmlName() && null != pathInfo.get(Constants.XML_PATH)) {
-                    String xmlFile = String.format((pathInfo.get(Constants.XML_PATH) + File.separator + tableInfo.getXmlName() + Constants.XML_SUFFIX), entityName);
-                    if (isCreate(FileType.XML, xmlFile)) {
-                        writer(objectMap, templateFilePath(template.getXml()), xmlFile);
-                    }
-                }
+
                 // IMpService.java
                 if (null != tableInfo.getServiceName() && null != pathInfo.get(Constants.SERVICE_PATH)) {
                     String serviceFile = String.format((pathInfo.get(Constants.SERVICE_PATH) + File.separator + tableInfo.getServiceName() + suffixJavaOrKt()), entityName);

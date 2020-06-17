@@ -55,6 +55,12 @@ public class TableInfo {
     private  String javaMapperTargetProject;
 
 
+    private  String  superMapper;
+
+    private  String  superService;
+
+    private  String  supperServiceImpl;
+
 
     private String insertStatementId;
 
@@ -74,6 +80,9 @@ public class TableInfo {
 
 
     private String selectListStatementId;
+
+
+    private  String  commaDelimitedFields;
 
 
 }

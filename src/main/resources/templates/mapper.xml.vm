@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${xmlFileNameSpace}">
+
+
+    <resultMap id="${baseResultMapId}" type="${domainType}">
+        #foreach($field in ${keyColumns})
+            <id column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.propertyName}"/>
+        #end
+        #foreach($field in ${columns})
+            <result column="${field.columnName}" jdbcType="${field.jdbcType}" property="${field.propertyName}"/>
+        #end
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        ${commaDelimitedFields}
+    </sql>
+
+    <insert id="${insertStatementId}" parameterType="${domainType}">
+        insert into  ${tableName}
+           (${commaDelimitedFields})
+        values (
+        #foreach($field in ${keyColumns})
+            #{${field.propertyName},jdbcType=${field.jdbcType}},
+        #end
+        #foreach($field in ${columns})
+          #if( !$foreach.hasNext )
+              #{${field.propertyName},jdbcType=${field.jdbcType}},
+          #end
+          #if( !$foreach.hasNext )
+              #{${field.propertyName},jdbcType=${field.jdbcType}}
+          #end
+        #end
+    </insert>
+
+
+
+    <insert id="${insertSelectiveStatementId}" parameterType="${domainType}">
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #foreach($field in ${keyColumns})
+              <if test="${field.propertyName} != null">
+                 ${field.propertyName},
+              </if>
+            #end
+            #foreach($field in ${columns})
+              <if test="${field.propertyName} != null">
+                 ${field.propertyName},
+              </if>
+            #end
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+           #foreach($field in ${keyColumns})
+                <if test="${field.propertyName} != null">
+                    #{${field.propertyName},jdbcType=${field.jdbcType}},
+                </if>
+           #end
+           #foreach($field in ${columns})
+                <if test="${field.propertyName} != null">
+                   #{${field.propertyName},jdbcType=${field.jdbcType}},
+                </if>
+           #end
+        </trim>
+    </insert>
+
+
+
+
+</mapper>

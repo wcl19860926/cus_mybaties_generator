@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-
+        "mybatis-generator-config_1_0.dtd">
+<!-- http://mybatis.org/dtd/ -->
 <generatorConfiguration>
 
     <context id="Mysql" targetRuntime="MyBatis3">
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
 
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -28,22 +27,15 @@
         </javaTypeResolver>
 
 
-        <!--
-        targetProject 的写法：
-           1. 相对路径： src/main/java
-        -->
+
         <javaModelGenerator targetPackage="com.study11.user.entity.sys"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
+            <property name="superEntity" value="com.study.common.core.mybaties.entity.BaseEntity"/>
         </javaModelGenerator>
 
-        <!--
-        targetProject 的写法：
-           1. 相对路径： src/main/resources/mapper
-           2. 相对路径: ${basedir}/../xxx/src/main/resources/mapper
-           3. 绝对路径：/Users/Charles/workspace/app-oms/src/resources/mapper
-        -->
+
         <sqlMapGenerator targetPackage="xml.sys11"
                          targetProject="src/main/resources/mapper">
             <property name="enableSubPackages" value="true"/>
@@ -51,6 +43,9 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.study11.user.mapper.sys"
                              targetProject="src/main/java/">
             <property name="enableSubPackages" value="true"/>
+            <property name="superMapper" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="baseService" value="com.study.common.core.mybaties.service.BaseService"/>
+            <property name="baseServiceImpl" value="com.study.common.core.mybaties.service.impl.BaseServiceImpl"/>
         </javaClientGenerator>
 
         <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
@@ -68,7 +63,6 @@
         -->
 
         <table schema="boo-shiro" tableName="sys_user" domainObjectName="SysUser">
-            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
             <property name="useActualColumnNames" value="true"/>
         </table>
 

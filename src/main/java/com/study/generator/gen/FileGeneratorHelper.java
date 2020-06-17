@@ -24,8 +24,8 @@ public class FileGeneratorHelper {
         FullyQualifiedTable fullyQualifiedTable   = introspectedTable.getFullyQualifiedTable();
         tableInfo.setTableName(fullyQualifiedTable.getIntrospectedTableName());
         tableInfo.setDomainName(fullyQualifiedTable.getDomainObjectName());
-        tableInfo.setColumns( getColumnInfo(introspectedTable.getBaseColumns()));
         tableInfo.setKeyColumns(getKeyColumnInfo(introspectedTable.getPrimaryKeyColumns() ,tableInfo));
+        tableInfo.setColumns( getColumnInfo(introspectedTable.getBaseColumns() , tableInfo));
         tableInfo.setBaseResultMapId(introspectedTable.getBaseResultMapId());
         tableInfo.setDomainType(introspectedTable.getBaseRecordType());
         tableInfo.setXmlFileName(introspectedTable.getMyBatis3XmlMapperFileName());
@@ -44,12 +44,16 @@ public class FileGeneratorHelper {
         tableInfo.setXmlTargetProject(introspectedTable.getXmlProject());
         tableInfo.setJavaMapperPackage(introspectedTable.getJavaPackage());
         tableInfo.setJavaMapperTargetProject(introspectedTable.getJavaProject());
-        tableInfo.setDomainSuperClass( introspectedTable.getTableConfigurationProperty("rootClass"));
+        tableInfo.setDomainSuperClass( introspectedTable.getSuperEntity());
+        tableInfo.setSuperMapper(introspectedTable.getSuperMapper());
+        tableInfo.setSuperService(introspectedTable.getBaseService());
+        tableInfo.setSupperServiceImpl(introspectedTable.getBaseServiceImpl());
         tableInfo.setTableComment(introspectedTable.getRemarks());
+        buildCommaDelimitedFields(tableInfo);
         return   tableInfo;
     }
 
-    private static List<ColumnInfo>  getColumnInfo(  List<IntrospectedColumn> baseColumns) {
+    private static List<ColumnInfo>  getColumnInfo(  List<IntrospectedColumn> baseColumns ,TableInfo   tableInfo) {
         ColumnInfo columnInfo;
         List<ColumnInfo>  columnInfos  = new ArrayList<>();
         for(IntrospectedColumn   introspectedColumn  :baseColumns  ){
@@ -70,6 +74,31 @@ public class FileGeneratorHelper {
         columnInfo.setJavaTypeFullName(qualifiedJavaType.getFullyQualifiedName());
         columnInfo.setJavaTypePackageName(qualifiedJavaType.getPackageName());
         columnInfo.setJavaTypeShortName(qualifiedJavaType.getShortName());
+    }
+
+
+
+    private  static void   buildCommaDelimitedFields(TableInfo tableInfo){
+        StringBuilder  buf  = new StringBuilder("");
+        List<ColumnInfo>  keyColumnInfos =tableInfo.getKeyColumns();
+        List<ColumnInfo>  columnInfos =tableInfo.getColumns();
+
+        for(ColumnInfo  columnInfo  : keyColumnInfos){
+            buf.append(columnInfo.getColumnName());
+            buf.append(", ");
+        }
+        int i = 1;
+        for(ColumnInfo  columnInfo  : columnInfos){
+            i++;
+            buf.append(columnInfo.getColumnName());
+            buf.append(", ");
+            if(i%11==0){
+                buf.append("\\r\\n ");
+            }
+        }
+        String fileds  = buf.toString();
+        fileds  = fileds.substring(0 ,fileds.length()-2);
+        tableInfo.setCommaDelimitedFields(fileds);
     }
 
 
