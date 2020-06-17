@@ -8,6 +8,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeServices;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -50,7 +51,9 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
         try (FileOutputStream fos = new FileOutputStream(outputFile);
              OutputStreamWriter ow = new OutputStreamWriter(fos, Constants.UTF8);
              BufferedWriter writer = new BufferedWriter(ow)) {
-            template.merge(new VelocityContext(objectMap), writer);
+            VelocityContext  context   = new  VelocityContext(objectMap);
+            context.put("utils" , new VelocityUtils());
+            template.merge(context, writer);
 
         }
         logger.debug("模板:" + templatePath + ";  文件:" + outputFile);

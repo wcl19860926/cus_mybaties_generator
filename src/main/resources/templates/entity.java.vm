@@ -1,14 +1,39 @@
 package ${javaEntityPackage};
 
 
+#foreach($pkg in ${importPackages})
+import ${pkg};
+#end
+
+import ${domainSuperClass};
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
-public  class  ${domainName}{
+@Data
+@ApiModel(value = "${tableComment}", description = "${tableComment}")
+public  class  ${domainName}  extends  ${utils.getClassName(${domainSuperClass})}<${primaryKeyType}>{
 
 
+private static final long serialVersionUID=1L;
 
+
+#foreach($col in ${keyColumns})
+
+/**
+* ${col.comment}
+*/
+@ApiModelProperty(value = "${col.comment}")
+private   ${col.javaTypeShortName}  ${col.propertyName};
+#end
+#foreach($col in ${columns})
+
+/**
+* ${col.comment}
+*/
+@ApiModelProperty(value = "${col.comment}")
+private   ${col.javaTypeShortName}  ${col.propertyName};
+#end
 
 }

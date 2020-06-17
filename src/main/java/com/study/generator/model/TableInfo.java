@@ -3,6 +3,7 @@ package com.study.generator.model;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -10,8 +11,14 @@ public class TableInfo {
 
     private String tableName;
 
+    private  String  tableComment;
+
+
+    private List<String>  importPackages = new ArrayList<>();
 
     private List<ColumnInfo> keyColumns;
+
+    private  String  primaryKeyType;
 
 
     private List<ColumnInfo> columns;
@@ -19,6 +26,8 @@ public class TableInfo {
     private String domainName;
 
     private String domainType;
+
+    private String domainSuperClass;
 
 
     private String baseResultMapId;

@@ -6,6 +6,8 @@ import com.study.generator.jdbc.introspect.IntrospectedTable;
 import com.study.generator.jdbc.java.FullyQualifiedJavaType;
 import com.study.generator.model.ColumnInfo;
 import com.study.generator.model.TableInfo;
+import com.study.generator.util.CollectionUtils;
+import com.study.generator.util.StringUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class FileGeneratorHelper {
         tableInfo.setTableName(fullyQualifiedTable.getIntrospectedTableName());
         tableInfo.setDomainName(fullyQualifiedTable.getDomainObjectName());
         tableInfo.setColumns( getColumnInfo(introspectedTable.getBaseColumns()));
-        tableInfo.setKeyColumns(getColumnInfo(introspectedTable.getPrimaryKeyColumns()));
+        tableInfo.setKeyColumns(getKeyColumnInfo(introspectedTable.getPrimaryKeyColumns() ,tableInfo));
         tableInfo.setBaseResultMapId(introspectedTable.getBaseResultMapId());
         tableInfo.setDomainType(introspectedTable.getBaseRecordType());
         tableInfo.setXmlFileName(introspectedTable.getMyBatis3XmlMapperFileName());
@@ -42,29 +44,53 @@ public class FileGeneratorHelper {
         tableInfo.setXmlTargetProject(introspectedTable.getXmlProject());
         tableInfo.setJavaMapperPackage(introspectedTable.getJavaPackage());
         tableInfo.setJavaMapperTargetProject(introspectedTable.getJavaProject());
-
+        tableInfo.setDomainSuperClass( introspectedTable.getTableConfigurationProperty("rootClass"));
+        tableInfo.setTableComment(introspectedTable.getRemarks());
         return   tableInfo;
     }
 
     private static List<ColumnInfo>  getColumnInfo(  List<IntrospectedColumn> baseColumns) {
         ColumnInfo columnInfo;
         List<ColumnInfo>  columnInfos  = new ArrayList<>();
-        FullyQualifiedJavaType qualifiedJavaType  =null;
         for(IntrospectedColumn   introspectedColumn  :baseColumns  ){
             columnInfo  = new  ColumnInfo();
-            columnInfo.setColumnName(introspectedColumn.getActualColumnName());
-            columnInfo.setPropertyName(introspectedColumn.getJavaProperty());
-            columnInfo.setComment(introspectedColumn.getRemarks());
-            columnInfo.setJdbcType(introspectedColumn.getJdbcTypeName());
-            qualifiedJavaType  = introspectedColumn.getFullyQualifiedJavaType();
-            columnInfo.setJavaTypeFullName(qualifiedJavaType.getFullyQualifiedName());
-            columnInfo.setJavaTypePackageName(qualifiedJavaType.getPackageName());
-            columnInfo.setJavaTypeShortName(qualifiedJavaType.getShortName());
+            setColumnValue(columnInfo, introspectedColumn);
             columnInfos.add(columnInfo);
         }
         return  columnInfos;
     }
 
+    private static void setColumnValue(ColumnInfo columnInfo, IntrospectedColumn introspectedColumn) {
+        FullyQualifiedJavaType qualifiedJavaType;
+        columnInfo.setColumnName(introspectedColumn.getActualColumnName());
+        columnInfo.setPropertyName(introspectedColumn.getJavaProperty());
+        columnInfo.setComment(introspectedColumn.getRemarks());
+        columnInfo.setJdbcType(introspectedColumn.getJdbcTypeName());
+        qualifiedJavaType = introspectedColumn.getFullyQualifiedJavaType();
+        columnInfo.setJavaTypeFullName(qualifiedJavaType.getFullyQualifiedName());
+        columnInfo.setJavaTypePackageName(qualifiedJavaType.getPackageName());
+        columnInfo.setJavaTypeShortName(qualifiedJavaType.getShortName());
+    }
+
+
+    private static List<ColumnInfo>  getKeyColumnInfo(  List<IntrospectedColumn> baseColumns  ,TableInfo   tableInfo) {
+        ColumnInfo columnInfo;
+        List<ColumnInfo>  columnInfos  = new ArrayList<>();
+        FullyQualifiedJavaType qualifiedJavaType  =null;
+        for(IntrospectedColumn   introspectedColumn  :baseColumns  ){
+            qualifiedJavaType =introspectedColumn.getFullyQualifiedJavaType();
+            columnInfo  = new  ColumnInfo();
+            if("id".equalsIgnoreCase(introspectedColumn.getJavaProperty())){
+                tableInfo.setPrimaryKeyType(qualifiedJavaType.getShortName());
+            }
+            setColumnValue(columnInfo, introspectedColumn);
+            columnInfos.add(columnInfo);
+        }
+        if(CollectionUtils.isNotEmpty(baseColumns) &&  StringUtils.isEmpty(tableInfo.getPrimaryKeyType())){
+            tableInfo.setPrimaryKeyType(baseColumns.get(0).getFullyQualifiedJavaType().getShortName());
+        }
+        return  columnInfos;
+    }
 
 
     private void writeGeneratedJavaFile(List<String> warnings)

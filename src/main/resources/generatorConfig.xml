@@ -67,36 +67,11 @@
          generatedKey  ： 它是主建列，数据库类型是DB2。这将导致MBG在生成的语句中生成正确的元素，以便可以返回新生成的键(使用特定于DB2的SQL)。
         -->
 
-        <table schema="boo-shiro" tableName="sys_user" domainObjectName="SysUser"
-               enableSelectByExample="false" enableDeleteByExample="false"
-               enableCountByExample="false" enableUpdateByExample="false">
+        <table schema="boo-shiro" tableName="sys_user" domainObjectName="SysUser">
             <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
             <property name="useActualColumnNames" value="true"/>
         </table>
-        <table schema="boo-shiro" tableName="sys_role" domainObjectName="SsyRole"
-               enableSelectByExample="false" enableDeleteByExample="false"
-               enableCountByExample="false" enableUpdateByExample="false">
-            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        <table schema="boo-shiro" tableName="sys_role_user" domainObjectName="SysRoleUser"
-               enableSelectByExample="false" enableDeleteByExample="false"
-               enableCountByExample="false" enableUpdateByExample="false">
-            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        <table schema="boo-shiro" tableName="sys_permission" domainObjectName="SysPermission"
-               enableSelectByExample="false" enableDeleteByExample="false"
-               enableCountByExample="false" enableUpdateByExample="false">
-            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
-            <property name="useActualColumnNames" value="true"/>
-        </table>
-        <table schema="boo-shiro" tableName="sys_permission_role" domainObjectName="SysPermissionRole"
-               enableSelectByExample="false" enableDeleteByExample="false"
-               enableCountByExample="false" enableUpdateByExample="false">
-            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
-            <property name="useActualColumnNames" value="true"/>
-        </table>
+
 
 
     </context>
