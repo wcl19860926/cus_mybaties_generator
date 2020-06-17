@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="Mysql" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="false"/>
+            <property name="addRemarkComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+        </commentGenerator>
+
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost/boo-shiro?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+
+        <!--
+        targetProject 的写法：
+           1. 相对路径： src/main/java
+        -->
+        <javaModelGenerator targetPackage="com.study11.user.entity.sys"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--
+        targetProject 的写法：
+           1. 相对路径： src/main/resources/mapper
+           2. 相对路径: ${basedir}/../xxx/src/main/resources/mapper
+           3. 绝对路径：/Users/Charles/workspace/app-oms/src/resources/mapper
+        -->
+        <sqlMapGenerator targetPackage="xml.sys11"
+                         targetProject="src/main/resources/mapper">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.study11.user.mapper.sys"
+                             targetProject="src/main/java/">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+           <property name="useActualColumnNames" value="true"/>
+           <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+           <columnOverride column="DATE_FIELD" property="startDate" />
+           <ignoreColumn column="FRED" />
+           <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+       </table>-->
+
+        <!--
+         columnOverride：字段 LONG_VARCHAR_FIELD 将被当成 VARCHAR 类型, 忽略该字段的真实类型.
+         ignoreColumn  ：字段FRED  将被忽略
+         generatedKey  ： 它是主建列，数据库类型是DB2。这将导致MBG在生成的语句中生成正确的元素，以便可以返回新生成的键(使用特定于DB2的SQL)。
+        -->
+
+        <table schema="boo-shiro" tableName="sys_user" domainObjectName="SysUser"
+               enableSelectByExample="false" enableDeleteByExample="false"
+               enableCountByExample="false" enableUpdateByExample="false">
+            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table schema="boo-shiro" tableName="sys_role" domainObjectName="SsyRole"
+               enableSelectByExample="false" enableDeleteByExample="false"
+               enableCountByExample="false" enableUpdateByExample="false">
+            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table schema="boo-shiro" tableName="sys_role_user" domainObjectName="SysRoleUser"
+               enableSelectByExample="false" enableDeleteByExample="false"
+               enableCountByExample="false" enableUpdateByExample="false">
+            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table schema="boo-shiro" tableName="sys_permission" domainObjectName="SysPermission"
+               enableSelectByExample="false" enableDeleteByExample="false"
+               enableCountByExample="false" enableUpdateByExample="false">
+            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+        <table schema="boo-shiro" tableName="sys_permission_role" domainObjectName="SysPermissionRole"
+               enableSelectByExample="false" enableDeleteByExample="false"
+               enableCountByExample="false" enableUpdateByExample="false">
+            <property name="rootClass" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+
+
+    </context>
+</generatorConfiguration>
