@@ -25,44 +25,122 @@
             #{${field.propertyName},jdbcType=${field.jdbcType}},
         #end
         #foreach($field in ${columns})
-          #if( !$foreach.hasNext )
+        #if( !$foreach.hasNext )
               #{${field.propertyName},jdbcType=${field.jdbcType}},
           #end
-          #if( !$foreach.hasNext )
+        #if( !$foreach.hasNext )
               #{${field.propertyName},jdbcType=${field.jdbcType}}
           #end
-        #end
+    #end
     </insert>
-
 
 
     <insert id="${insertSelectiveStatementId}" parameterType="${domainType}">
         insert into ${tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #foreach($field in ${keyColumns})
-              <if test="${field.propertyName} != null">
-                 ${field.propertyName},
-              </if>
-            #end
-            #foreach($field in ${columns})
-              <if test="${field.propertyName} != null">
-                 ${field.propertyName},
-              </if>
+            #foreach( $field  in  ${allColumns})
+                <if test="${field.propertyName} != null">
+                    ${field.propertyName},
+                </if>
             #end
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-           #foreach($field in ${keyColumns})
+            #foreach($field in ${allColumns})
                 <if test="${field.propertyName} != null">
                     #{${field.propertyName},jdbcType=${field.jdbcType}},
                 </if>
-           #end
-           #foreach($field in ${columns})
-                <if test="${field.propertyName} != null">
-                   #{${field.propertyName},jdbcType=${field.jdbcType}},
-                </if>
-           #end
+            #end
         </trim>
     </insert>
+
+    <update id="${updateByPrimaryKeyStatementId}" parameterType="${domainType}">
+
+        update ${tableName}
+        set
+     #foreach($field in ${columns})
+        #if( !$foreach.hasNext )
+            ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}},
+        #end
+        #if( $foreach.hasNext )
+            ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+        #end
+    #end
+        where
+       #foreach($field in ${keyColumns})
+        #if( $foreach.first )
+            ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+          #end
+        #if( !$foreach.first )
+            and    ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+          #end
+    #end
+    </update>
+
+
+
+    <update id="${updateByPrimaryKeySelectiveStatementId}" parameterType="${domainType}">
+        update  ${tableName}
+        <set>
+            #foreach($field in ${columns})
+                <if test="${field.propertyName} != null">
+                    ${field.propertyName} = #{${field.propertyName},jdbcType=${field.jdbcType}},
+                </if>
+            #end
+        </set>
+        where
+        #foreach($field in ${keyColumns})
+            #if( $foreach.first )
+                ${field.propertyName} = #{${field.propertyName},jdbcType=${field.jdbcType}}
+            #end
+            #if( !$foreach.first )
+                and    ${field.propertyName} = #{${field.propertyName},jdbcType=${field.jdbcType}}
+            #end
+        #end
+    </update>
+
+    <delete id="${deleteByPrimaryKeyStatementId}" parameterType="${primaryKeyType}">
+    delete from ${tableName}
+    where
+    #foreach($field in ${keyColumns})
+        #if( $foreach.first )
+            ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+        #end
+        #if( !$foreach.first )
+           and    ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+        #end
+    #end
+  </delete>
+
+    <select id="${selectByPrimaryKeyStatementId}" parameterType="${primaryKeyType}" resultMap="${baseResultMapId}">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        where
+    #foreach($field in ${keyColumns})
+        #if( $foreach.first )
+            ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+        #end
+        #if( !$foreach.first )
+            and    ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+        #end
+    #end
+    </select>
+
+
+    <select id="${selectListStatementId}" parameterType="java.util.Map" resultMap="${baseResultMapId}">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <where>
+        #foreach( $field  in  ${allColumns})
+           <if test="${field.propertyName} != null">
+            and    ${field.propertyName} =  #{${field.propertyName},jdbcType=${field.jdbcType}}
+           </if>
+        #end
+        </where>
+    </select>
+
+
 
 
 

@@ -20,6 +20,8 @@ public class TableInfo {
 
     private  String  primaryKeyType;
 
+    private  String   primaryKeyTypeShortName;
+
 
     private List<ColumnInfo> columns;
 
@@ -84,5 +86,8 @@ public class TableInfo {
 
     private  String  commaDelimitedFields;
 
+
+
+    private   List<ColumnInfo>  allColumns  =new ArrayList<>();
 
 }

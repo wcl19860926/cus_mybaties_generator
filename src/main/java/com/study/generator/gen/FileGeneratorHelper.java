@@ -11,6 +11,7 @@ import com.study.generator.util.StringUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -50,16 +51,22 @@ public class FileGeneratorHelper {
         tableInfo.setSupperServiceImpl(introspectedTable.getBaseServiceImpl());
         tableInfo.setTableComment(introspectedTable.getRemarks());
         buildCommaDelimitedFields(tableInfo);
+
+        tableInfo.getAllColumns().addAll(tableInfo.getKeyColumns());
+        tableInfo.getAllColumns().addAll(tableInfo.getColumns());
+        Collections.sort(tableInfo.getAllColumns());
         return   tableInfo;
     }
 
     private static List<ColumnInfo>  getColumnInfo(  List<IntrospectedColumn> baseColumns ,TableInfo   tableInfo) {
         ColumnInfo columnInfo;
         List<ColumnInfo>  columnInfos  = new ArrayList<>();
+        int i=10;
         for(IntrospectedColumn   introspectedColumn  :baseColumns  ){
             columnInfo  = new  ColumnInfo();
             setColumnValue(columnInfo, introspectedColumn);
             columnInfos.add(columnInfo);
+            columnInfo.setOrder(i++);
         }
         return  columnInfos;
     }
@@ -106,13 +113,19 @@ public class FileGeneratorHelper {
         ColumnInfo columnInfo;
         List<ColumnInfo>  columnInfos  = new ArrayList<>();
         FullyQualifiedJavaType qualifiedJavaType  =null;
+        int  i =0 ;
         for(IntrospectedColumn   introspectedColumn  :baseColumns  ){
             qualifiedJavaType =introspectedColumn.getFullyQualifiedJavaType();
             columnInfo  = new  ColumnInfo();
-            if("id".equalsIgnoreCase(introspectedColumn.getJavaProperty())){
-                tableInfo.setPrimaryKeyType(qualifiedJavaType.getShortName());
-            }
+            columnInfo.setOrder(i++);
             setColumnValue(columnInfo, introspectedColumn);
+            if("id".equalsIgnoreCase(introspectedColumn.getJavaProperty())){
+                tableInfo.setPrimaryKeyType(qualifiedJavaType.getFullyQualifiedName());
+                tableInfo.setPrimaryKeyTypeShortName(qualifiedJavaType.getShortName());
+                columnInfo.setOrder(-99);
+            }
+
+
             columnInfos.add(columnInfo);
         }
         if(CollectionUtils.isNotEmpty(baseColumns) &&  StringUtils.isEmpty(tableInfo.getPrimaryKeyType())){

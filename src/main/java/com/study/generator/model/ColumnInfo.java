@@ -1,9 +1,10 @@
 package com.study.generator.model;
 
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 @Data
-public class ColumnInfo {
+public class ColumnInfo  implements  Comparable<ColumnInfo> {
 
 
     private  String JavaTypeFullName;
@@ -20,4 +21,10 @@ public class ColumnInfo {
 
     private String comment;
 
+    private Integer order;
+
+    @Override
+    public int compareTo(ColumnInfo o) {
+        return this.order.compareTo(o.getOrder());
+    }
 }
