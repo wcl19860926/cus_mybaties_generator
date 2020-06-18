@@ -45,7 +45,7 @@ public class AutoGenerator {
 
     private static File loadConfigFile() throws Exception {
         try {
-            ClassPathResource pathResource = new ClassPathResource("demo_generatorConfig.xml");
+            ClassPathResource pathResource = new ClassPathResource("generatorConfig.xml");
             return pathResource.getFile();
         }catch (Exception e){
             throw new  Exception("在类路径下，未找到配置文件generatorConfig.xml" ,e);
