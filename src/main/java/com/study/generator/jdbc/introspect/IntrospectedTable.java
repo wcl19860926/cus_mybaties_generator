@@ -1008,4 +1008,20 @@ public class  IntrospectedTable {
         return context.getJavaClientGeneratorConfiguration().getProperty("baseServiceImpl");
     }
 
+
+
+    public String getServicePackage() {
+        return context.getJavaClientGeneratorConfiguration().getProperty("servicePackage");
+    }
+    public String getControllerPackage() {
+        return context.getJavaClientGeneratorConfiguration().getProperty("controllerPackage");
+    }
+
+
+    public String getBaseController() {
+        return context.getJavaClientGeneratorConfiguration().getProperty("baseController");
+    }
+
+
+
 }

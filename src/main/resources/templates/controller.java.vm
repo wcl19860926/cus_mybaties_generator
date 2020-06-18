@@ -1,0 +1,37 @@
+package ${controllerPackage};
+
+
+import io.swagger.annotations.Api;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.Arrays;
+import java.util.Map;
+import ${domainType};
+import ${supperController};
+import ${servicePackage}.${domainName}Service;
+
+/**
+ * $!{tableComment} 前端控制器
+ *
+ * @author
+ * @date ${date}
+ */
+@Api(value = "$!{tableComment}", tags = "$!{tableComment}")
+@RestController
+@RequestMapping("/$util.firstToLowerCase(${domainName})")
+public class ${domainName}Controller extends  ${util.getClassName(${supperController})} {
+
+
+    @Autowired
+    private  ${domainName}Service  ${util.firstToLowerCase( ${util.concat(${domainName} ,"Service;" )} )}
+
+
+
+
+
+}

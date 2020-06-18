@@ -1,18 +1,16 @@
-package ${package.Service};
+package ${servicePackage};
 
-import ${package.Entity}.${entity};
-import ${superServiceClassPackage};
-
+import ${domainType};
+import ${superService};
 /**
- * $!{table.comment} 服务类
+ * ${tableComment} 服务类
  *
- * @author ${author}
+ * @author
  * @date ${date}
  */
-#if(${kotlin})
-interface ${table.serviceName} : ${superServiceClass}<${entity}>
-#else
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
 
-        }
-#end
+public interface ${domainName}Service  extends   ${util.getClassName(${superService})}<${domainName} , ${primaryKeyTypeShortName}> {
+
+
+}
+

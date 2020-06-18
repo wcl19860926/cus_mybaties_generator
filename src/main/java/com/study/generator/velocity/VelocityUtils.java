@@ -37,22 +37,13 @@ public class VelocityUtils {
     }
 
 
-
-    public  static  String  getClassName(String  type){
+    public static String getClassName(String type) {
         if (isEmpty(type)) {
             return EMPTY;
         }
-        int index  = type.lastIndexOf(".");
-        return type.substring(index+1 ,type.length());
+        int index = type.lastIndexOf(".");
+        return type.substring(index + 1, type.length());
     }
-
-
-    public static void main(String[] args) {
-
-        System.out.println(getClassName("com.study.common.core.mybaties.entity.BaseEntity"));
-
-    }
-
 
 
     public static String firstToLowerCase(String param) {
@@ -60,6 +51,19 @@ public class VelocityUtils {
             return EMPTY;
         }
         return param.substring(0, 1).toLowerCase() + param.substring(1);
+    }
+
+
+    public static String concat(String... args) {
+        StringBuilder buf = new StringBuilder("");
+        if (args != null) {
+            for (String str : args) {
+                if (isNotEmpty(str)) {
+                    buf.append(str);
+                }
+            }
+        }
+        return buf.toString();
     }
 
 }

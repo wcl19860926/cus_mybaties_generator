@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "${tableComment}", description = "${tableComment}")
-public  class  ${domainName}  extends  ${utils.getClassName(${domainSuperClass})}<${primaryKeyTypeShortName}>{
+public  class  ${domainName}  extends  ${util.getClassName(${domainSuperClass})}<${primaryKeyTypeShortName}>{
 
 
 private static final long serialVersionUID=1L;

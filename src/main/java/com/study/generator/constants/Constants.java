@@ -8,8 +8,6 @@ public interface Constants {
 
     String SERVICE = "Service";
     String SERVICE_IMPL = "ServiceImpl";
-    String MAPPER = "Mapper";
-    String XML = "Xml";
     String CONTROLLER = "Controller";
 
     String JAVA_TMPDIR = "java.io.tmpdir";
@@ -17,6 +15,8 @@ public interface Constants {
     String JAVA_SUFFIX = StringPool.DOT_JAVA;
 
     String XML_SUFFIX = ".xml";
+    String IMPL_PACKAGE_SUFFIX = "impl";
+
 
     String TEMPLATE_ENTITY_JAVA = "/templates/entity.java";
     String TEMPLATE_MAPPER = "/templates/mapper.java";

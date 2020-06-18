@@ -49,9 +49,11 @@ public class FileGeneratorHelper {
         tableInfo.setSuperMapper(introspectedTable.getSuperMapper());
         tableInfo.setSuperService(introspectedTable.getBaseService());
         tableInfo.setSupperServiceImpl(introspectedTable.getBaseServiceImpl());
+        tableInfo.setServicePackage(introspectedTable.getServicePackage());
+        tableInfo.setSupperController(introspectedTable.getBaseController());
+        tableInfo.setControllerPackage(introspectedTable.getControllerPackage());
         tableInfo.setTableComment(introspectedTable.getRemarks());
         buildCommaDelimitedFields(tableInfo);
-
         tableInfo.getAllColumns().addAll(tableInfo.getKeyColumns());
         tableInfo.getAllColumns().addAll(tableInfo.getColumns());
         Collections.sort(tableInfo.getAllColumns());
@@ -124,8 +126,6 @@ public class FileGeneratorHelper {
                 tableInfo.setPrimaryKeyTypeShortName(qualifiedJavaType.getShortName());
                 columnInfo.setOrder(-99);
             }
-
-
             columnInfos.add(columnInfo);
         }
         if(CollectionUtils.isNotEmpty(baseColumns) &&  StringUtils.isEmpty(tableInfo.getPrimaryKeyType())){

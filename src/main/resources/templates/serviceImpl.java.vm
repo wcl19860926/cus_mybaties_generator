@@ -1,27 +1,31 @@
-package ${package.ServiceImpl};
+package ${servicePackage}.impl;
 
-import ${package.Entity}.${entity};
-import ${package.Mapper}.${table.mapperName};
-import ${package.Service}.${table.serviceName};
-import ${superServiceImplClassPackage};
+import ${domainType};
+import ${javaMapperType};
+import ${supperServiceImpl};
+import ${superMapper};
+import ${servicePackage}.${domainName}Service;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * $!{table.comment} 服务实现类
+ * $!{tableComment} 服务实现类
  *
- * @author ${author}
+ * @author
  * @date ${date}
  */
-@Service
-@Transactional(rollbackFor = Exception.class)
-#if(${kotlin})
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+@Service(value = "${util.firstToLowerCase( ${util.concat(${domainName} ,"ServiceImpl" )} )}")
+public class ${domainName}ServiceImpl extends  ${util.getClassName(${supperServiceImpl})}<${domainName} , ${primaryKeyTypeShortName}> implements ${domainName}Service{
 
-        }
-#else
-        public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
 
+       @Autowired
+       private  ${util.getClassName(${javaMapperType})}   ${util.firstToLowerCase(${util.getClassName(${javaMapperType})})};
+
+
+        @Override
+        public  BaseMapper<${domainName} , ${primaryKeyTypeShortName}> getMapper(){
+              return ${util.firstToLowerCase(${util.getClassName(${javaMapperType})})};
         }
-#end
+
+
+}

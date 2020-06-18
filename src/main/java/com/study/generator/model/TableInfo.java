@@ -4,6 +4,7 @@ package com.study.generator.model;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -63,6 +64,12 @@ public class TableInfo {
 
     private  String  supperServiceImpl;
 
+    private  String controllerPackage;
+
+    private  String  supperController;
+
+    private  String  servicePackage;
+
 
     private String insertStatementId;
 
@@ -85,6 +92,9 @@ public class TableInfo {
 
 
     private  String  commaDelimitedFields;
+
+    private  Date  date  = new Date();
+
 
 
 

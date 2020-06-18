@@ -43,9 +43,12 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.study11.user.mapper.sys"
                              targetProject="src/main/java/">
             <property name="enableSubPackages" value="true"/>
-            <property name="superMapper" value="com.study.common.core.mybaties.entity.BaseEntity"/>
+            <property name="superMapper" value="com.study.common.core.mybaties.mapper.BaseMapper"/>
+            <property name="servicePackage" value="com.study11.user.service.sys" />
+            <property name="controllerPackage" value="com.study11.user.controller.sys" />
             <property name="baseService" value="com.study.common.core.mybaties.service.BaseService"/>
             <property name="baseServiceImpl" value="com.study.common.core.mybaties.service.impl.BaseServiceImpl"/>
+            <property name="baseController" value="com.study.common.core.web.controller.BaseController"/>
         </javaClientGenerator>
 
         <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >

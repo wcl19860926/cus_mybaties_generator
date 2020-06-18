@@ -2,6 +2,7 @@ package com.study.generator.velocity;
 
 
 import com.study.generator.config.TemplateConfig;
+import com.study.generator.constants.Constants;
 import com.study.generator.constants.StringPool;
 import com.study.generator.model.TableInfo;
 import com.study.generator.util.StringUtils;
@@ -51,7 +52,6 @@ public abstract class AbstractTemplateEngine {
                 Map<String, Object> objectMap = getObjectMap(tableInfo);
                 // Mp.java
                 String entityName = tableInfo.getDomainName();
-
                 String entityFile = String.format(getGeneratePath(tableInfo.getJavaEntityTargetProject(), tableInfo.getJavaEntityPackage()).getAbsolutePath() + File.separator + "%s" + JAVA_SUFFIX, entityName);
                 writer(objectMap, templateFilePath(TemplateConfig.entity), entityFile);
 
@@ -59,38 +59,21 @@ public abstract class AbstractTemplateEngine {
                 String xmlFile = getGeneratePath(tableInfo.getXmlTargetProject(), tableInfo.getXmlTargetPackage()).getAbsolutePath() + File.separator + tableInfo.getXmlFileName();
                 writer(objectMap, templateFilePath(TemplateConfig.xml), xmlFile);
 
-
-
-
                 // MpMapper.java
-                /*if (null != tableInfo.getMapperName() && null != pathInfo.get(Constants.MAPPER_PATH)) {
-                    String mapperFile = String.format((pathInfo.get(Constants.MAPPER_PATH) + File.separator + tableInfo.getMapperName() + suffixJavaOrKt()), entityName);
-                    if (isCreate(FileType.MAPPER, mapperFile)) {
-                        writer(objectMap, templateFilePath(template.getMapper()), mapperFile);
-                    }
-                }
+                String mapperFile = getGeneratePath(tableInfo.getJavaMapperTargetProject(), tableInfo.getJavaMapperPackage()).getAbsolutePath() + File.separator + VelocityUtils.getClassName(tableInfo.getJavaMapperType()) +JAVA_SUFFIX;
+                writer(objectMap, templateFilePath(TemplateConfig.mapper), mapperFile);
 
                 // IMpService.java
-                if (null != tableInfo.getServiceName() && null != pathInfo.get(Constants.SERVICE_PATH)) {
-                    String serviceFile = String.format((pathInfo.get(Constants.SERVICE_PATH) + File.separator + tableInfo.getServiceName() + suffixJavaOrKt()), entityName);
-                    if (isCreate(FileType.SERVICE, serviceFile)) {
-                        writer(objectMap, templateFilePath(template.getService()), serviceFile);
-                    }
-                }
+                String serviceFile = getGeneratePath(tableInfo.getJavaMapperTargetProject(), tableInfo.getServicePackage()).getAbsolutePath() + File.separator + tableInfo.getDomainName() + Constants.SERVICE + Constants.JAVA_SUFFIX;
+                writer(objectMap, templateFilePath(TemplateConfig.service), serviceFile);
+
                 // MpServiceImpl.java
-                if (null != tableInfo.getServiceImplName() && null != pathInfo.get(Constants.SERVICE_IMPL_PATH)) {
-                    String implFile = String.format((pathInfo.get(Constants.SERVICE_IMPL_PATH) + File.separator + tableInfo.getServiceImplName() + suffixJavaOrKt()), entityName);
-                    if (isCreate(FileType.SERVICE_IMPL, implFile)) {
-                        writer(objectMap, templateFilePath(template.getServiceImpl()), implFile);
-                    }
-                }
+                String mpServiceImpl = getGeneratePath(tableInfo.getJavaMapperTargetProject(), tableInfo.getServicePackage()).getAbsolutePath() + File.separator + Constants.IMPL_PACKAGE_SUFFIX + File.separator + tableInfo.getDomainName() + Constants.SERVICE_IMPL + Constants.JAVA_SUFFIX;
+                writer(objectMap, templateFilePath(TemplateConfig.serviceImpl), mpServiceImpl);
                 // MpController.java
-                if (null != tableInfo.getControllerName() && null != pathInfo.get(Constants.CONTROLLER_PATH)) {
-                    String controllerFile = String.format((pathInfo.get(Constants.CONTROLLER_PATH) + File.separator + tableInfo.getControllerName() + suffixJavaOrKt()), entityName);
-                    if (isCreate(FileType.CONTROLLER, controllerFile)) {
-                        writer(objectMap, templateFilePath(template.getController()), controllerFile);
-                    }
-                }*/
+                String controllerFile = getGeneratePath(tableInfo.getJavaMapperTargetProject(), tableInfo.getControllerPackage()).getAbsolutePath() + File.separator + tableInfo.getDomainName() + Constants.CONTROLLER + Constants.JAVA_SUFFIX;
+                writer(objectMap, templateFilePath(TemplateConfig.controller), controllerFile);
+
             }
         } catch (Exception e) {
             logger.error("无法创建文件，请检查配置信息！", e);
@@ -99,17 +82,10 @@ public abstract class AbstractTemplateEngine {
     }
 
 
-
-
-
-
-
-
-
     private File getGeneratePath(String targetProject, String packagePath) {
         Path curPath = Paths.get("");
         System.out.println(curPath.toString());
-        packagePath  = packagePathToFilePath(packagePath);
+        packagePath = packagePathToFilePath(packagePath);
         Path targetPath = Paths.get(targetProject, packagePath);
         String path = curPath.resolve(targetPath).toAbsolutePath().toString();
         path = FilenameUtils.normalize(path);
@@ -130,14 +106,11 @@ public abstract class AbstractTemplateEngine {
     public abstract void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception;
 
 
-
-
-
-    private  String  packagePathToFilePath(String packagePath){
-        if(packagePath==null || StringUtils.isEmpty(packagePath)){
-            return  "";
+    private String packagePathToFilePath(String packagePath) {
+        if (packagePath == null || StringUtils.isEmpty(packagePath)) {
+            return "";
         }
-       return   StringUtils.join(File.separatorChar +"" , packagePath.split("\\."));
+        return StringUtils.join(File.separatorChar + "", packagePath.split("\\."));
 
     }
 

@@ -11,6 +11,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeServices;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
@@ -48,11 +49,16 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
             return;
         }
         Template template = velocityEngine.getTemplate(templatePath, Constants.UTF8);
-        try (FileOutputStream fos = new FileOutputStream(outputFile);
+          File file  =  new File(outputFile);
+          File  parent  = file.getParentFile();
+          if(!parent.exists()){
+              parent.mkdirs();
+          }
+        try (FileOutputStream fos = new FileOutputStream(file);
              OutputStreamWriter ow = new OutputStreamWriter(fos, Constants.UTF8);
              BufferedWriter writer = new BufferedWriter(ow)) {
             VelocityContext  context   = new  VelocityContext(objectMap);
-            context.put("utils" , new VelocityUtils());
+            context.put("util" , new VelocityUtils());
             template.merge(context, writer);
 
         }
